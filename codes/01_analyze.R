@@ -70,3 +70,7 @@ vienna_data %>%
   theme_bw() +
   ggsave('plots/average_price_and_rating.png')
 
+# save the modified data set as a csv
+write_csv(vienna_data, 'data/processed/vienna_data.csv')
+
+
