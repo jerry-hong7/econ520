@@ -70,7 +70,51 @@ vienna_data %>%
   theme_bw() +
   ggsave('plots/average_price_and_rating.png')
 
+# some observations include a downward trend in the for hostels, implying a higher price does not necessarily mean a higher rating
+# for hotels and other accommodations, there is a positive trend, implying a higher price is associated with a higher rating
+
+# create a histogram distributing the average customer rating
+vienna_data %>%
+  ggplot(aes(x = guestreviewsrating)) +
+  geom_histogram(binwidth = 0.5, fill = 'blue', color = 'black') +
+  labs(title = 'Distribution of Average Customer Rating', x = 'Average Customer Rating', y = 'Frequency') +
+  theme_bw() +
+  ggsave('plots/distribution_of_rating.png')
+
+# remove ' miles' from the 'center1distance' column and convert to numeric
+vienna_data <- vienna_data %>%
+  mutate(distancecitycenter = as.numeric(gsub(' miles', '', center1distance)))
+
+# create a histogram for the average distance from the city center
+vienna_data %>%
+  ggplot(aes(x = distancecitycenter)) +
+  geom_histogram(binwidth = 1, fill = 'green', color = 'black') +
+  labs(title = 'Distribution of Distance from City Center', x = 'Distance from City Center (miles)', y = 'Frequency') +
+  theme_bw() +
+  ggsave('plots/distribution_of_distance.png')
+
+# based on the figure, there seems to be a couple outliers that are far from the city center
+
+# create a density plot for the average price
+vienna_data %>%
+  ggplot(aes(x = price)) +
+  geom_density(fill = 'red', color = 'black') +
+  labs(title = 'Density Plot of Average Price', x = 'Average Price', y = 'Density') +
+  theme_bw() +
+  ggsave('plots/density_of_price.png')
+
+# create a histogram for the average price, among hotels only
+vienna_data %>%
+  filter(type == 'hotel') %>%
+  ggplot(aes(x = price)) +
+  geom_histogram(binwidth = 10, fill = 'purple', color = 'black') +
+  labs(title = 'Distribution of Average Price for Hotels', x = 'Average Price', y = 'Frequency') +
+  theme_bw() +
+  ggsave('plots/distribution_of_price_hotels.png')
+
 # save the modified data set as a csv
 write_csv(vienna_data, 'data/processed/vienna_data.csv')
+
+
 
 
