@@ -66,7 +66,7 @@ vienna_data %>%
   ggplot(aes(x = price, y = guestreviewsrating, color = type)) +
   geom_point() +
   geom_smooth(method = 'lm', se = FALSE) +
-  labs(title = 'Average Price and Average Customer Rating', x = 'Average Price', y = 'Average Customer Rating') +
+  labs(title = 'Average Price and Customer Rating by Accommodation Type', x = 'Average Price', y = 'Average Customer Rating') +
   theme_bw() +
   ggsave('plots/average_price_and_rating.png')
 
@@ -80,6 +80,14 @@ vienna_data %>%
   labs(title = 'Distribution of Average Customer Rating', x = 'Average Customer Rating', y = 'Frequency') +
   theme_bw() +
   ggsave('plots/distribution_of_rating.png')
+
+# create a distribution for the number of reviews
+vienna_data %>%
+  ggplot(aes(x = rating_reviewcount)) +
+  geom_histogram(bins = 50, fill = 'orange', color = 'black') +
+  labs(title = 'Distribution of Number of Reviews', x = 'Number of Reviews', y = 'Frequency') +
+  theme_bw() +
+  ggsave('plots/distribution_of_reviews.png')
 
 # remove ' miles' from the 'center1distance' column and convert to numeric
 vienna_data <- vienna_data %>%
@@ -107,14 +115,49 @@ vienna_data %>%
 vienna_data %>%
   filter(type == 'hotel') %>%
   ggplot(aes(x = price)) +
-  geom_histogram(binwidth = 10, fill = 'purple', color = 'black') +
+  geom_histogram(binwidth = 20, fill = 'purple', color = 'black') +
   labs(title = 'Distribution of Average Price for Hotels', x = 'Average Price', y = 'Frequency') +
   theme_bw() +
   ggsave('plots/distribution_of_price_hotels.png')
 
+# add a density to the histogram plot of average price for hotels
+vienna_data %>%
+  filter(type == 'hotel') %>%
+  ggplot(aes(x = price)) +
+  geom_histogram(aes(y=..density..), binwidth = 20, fill = 'white', color = 'black', alpha = 0.5) +
+  geom_density(lwd = 1, alpha = 0.25, fill = 'blue', color = 'black') +
+  labs(title = 'Distribution of Average Price for Hotels', x = 'Average Price', y = 'Density') +
+  theme_bw() +
+  ggsave('plots/distribution_of_price_hotels_density.png')
+
+# create a histogram for the average price, among hotels only but restricted to distance from city at 8
+vienna_data %>%
+  filter(type == 'hotel', distancecitycenter < 8) %>%
+  ggplot(aes(x = price)) +
+  geom_histogram(binwidth = 20, fill = 'purple', color = 'black') +
+  labs(title = 'Distribution of Average Price for Hotels within 8 miles of City Center', x = 'Average Price', y = 'Frequency') +
+  theme_bw() +
+  ggsave('plots/distribution_of_price_hotels_8miles.png')
+
+# create histogram for the average price, among hotels only and add a horizontal line where the distance is at 8
+
+
+# create a box plot for the average price by type of accommodation
+vienna_data %>%
+  ggplot(aes(x = type, y = price, fill = type)) +
+  geom_boxplot() +
+  labs(title = 'Average Price by Type of Accommodation', x = 'Type of Accommodation', y = 'Average Price') +
+  theme_bw() +
+  ggsave('plots/boxplot_price_by_type.png')
+
+# create a violin plot for the average price by type of accommodation
+vienna_data %>%
+  ggplot(aes(x = type, y = price, fill = type)) +
+  geom_violin() +
+  labs(title = 'Average Price by Type of Accommodation', x = 'Type of Accommodation', y = 'Average Price') +
+  theme_bw() +
+  ggsave('plots/violin_price_by_type.png')
+
 # save the modified data set as a csv
 write_csv(vienna_data, 'data/processed/vienna_data.csv')
-
-
-
 

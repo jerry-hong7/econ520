@@ -1,0 +1,48 @@
+---
+title: "Econ520 Practicum - Analyzing Vienna Accommodations"
+author: "Jerry Hong"
+date: "2024-03-03"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r load packages, echo=FALSE}
+pacman::p_load(tidyverse, knitr, tinytex)
+```
+
+
+## Background: Vienna, Austria Accommodations
+
+```{r image, echo=FALSE}}
+knitr::include_graphics("docs/vienna.jpg")
+```
+
+
+Our point of interest in this report is to explore and find good deals among hotels, hospitals, and other types of accommodations across Vienna, Austria. The data set contains information, such as price, type, and customer ratings of 428 accommodations in Vienna. The data set is from the website Booking.com and was collected in 2017. The primary objective is uncover relationships between price and the other variables, in hopes gain a better understanding on finding good deals.    
+
+## Data Exploration
+
+Let's start by loading the data set and taking a look at the first few rows and a summary of the data set.
+
+```{r load data, echo=FALSE}
+vienna <- read_csv("data/processed/vienna_data.csv")
+```
+
+```{r head, echo=FALSE}
+head(vienna)
+```
+
+```{r summary, echo=FALSE}
+summary(vienna)
+```
+
+## Time to Tidy Up the Dataset
+
+There are a few things we need to do to tidy up the data set. First,  
+
+```{r tidy, echo=FALSE}
