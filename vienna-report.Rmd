@@ -27,7 +27,7 @@ Our point of interest in this report is to explore and find good deals among hot
 
 ## Data Exploration
 
-Let's start by loading the data set and taking a look at the first few rows and a summary of the data set.
+Let's start by loading the data set and taking a look at the first few rows and a summary of the data set. This is a processed data set where we have to modify the data types of some variables in order to do the appropriate analysis. For example, the `guestreviewsrating` variable was of type character, so we convert it to numeric type. This data set also includes a couple new variables that can complement our analysis. For example, we created a variable to better differentiate the type of accommodation.
 
 ```{r load data, echo=FALSE}
 vienna <- read_csv("data/processed/vienna_data.csv")
@@ -41,8 +41,14 @@ head(vienna)
 summary(vienna)
 ```
 
-## Time to Tidy Up the Dataset
+## Exploring Relationships with Price
 
-There are a few things we need to do to tidy up the data set. First,  
+We will start by exploring the relationship between price and the other variables in the data set. We will use scatter plots to visualize the relationships. 
 
-```{r tidy, echo=FALSE}
+```{r scatter plots, echo=FALSE}
+
+
+```
+
+
+## Concluding Remarks
