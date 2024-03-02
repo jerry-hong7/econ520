@@ -22,14 +22,13 @@ pacman::p_load(tidyverse, knitr, tinytex)
 knitr::include_graphics("docs/vienna.jpg")
 ```
 
-
-Our point of interest in this report is to explore and find good deals among hotels, hospitals, and other types of accommodations across Vienna, Austria. The data set contains information, such as price, type, and customer ratings of 428 accommodations in Vienna. The data set is from the website Booking.com and was collected in 2017. The primary objective is uncover relationships between price and the other variables, in hopes gain a better understanding on finding good deals.    
+Vienna, Austria is a popular tourist destination known for its rich history, beautiful architecture, and vibrant city culture. It is also known for its high quality of life and is often ranked as one of the best cities to live in. As a result, Vienna has a wide variety of accommodations to choose from, ranging from luxury hotels to budget hostels.Our point of interest in this report is to explore and find good deals among hotels, hospitals, and other types of accommodations across Vienna, Austria. The data set contains information, such as price, type, and customer ratings of 428 accommodations in Vienna. The data set is from the website Booking.com and was collected in 2017. The primary objective is uncover relationships between price and the other variables, in hopes gain a better understanding on finding good deals.    
 
 ## Data Exploration
 
 Let's start by loading the data set and taking a look at the first few rows and a summary of the data set. This is a processed data set where we have to modify the data types of some variables in order to do the appropriate analysis. For example, the `guestreviewsrating` variable was of type character, so we convert it to numeric type. This data set also includes a couple new variables that can complement our analysis. For example, we created a variable to better differentiate the type of accommodation.
 
-```{r load data, echo=FALSE}
+```{r load-data, echo=FALSE}
 vienna <- read_csv("data/processed/vienna_data.csv")
 ```
 
@@ -43,12 +42,66 @@ summary(vienna)
 
 ## Exploring Relationships with Price
 
-We will start by exploring the relationship between price and the other variables in the data set. We will use scatter plots to visualize the relationships. 
+We will start by exploring the relationship between price and the other variables in the data set. We will use a series of different visualizations to see any relationships and trends in regards to pricing. 
 
-```{r scatter plots, echo=FALSE}
+```{r table-type, echo=FALSE}
+vienna %>%
+  group_by(type) %>%
+  summarize(mean_price = mean(price), sd_price = sd(price), median_price = median(price), count = n())
+```
+In the above table, hotels dominate throughout Vienna, with 264 in the area. Hostels are the least common, with only 6 in the area. 
 
+
+```{r price-dist, echo=FALSE}
+vienna %>%
+  ggplot(aes(x = price)) +
+  geom_histogram(binwidth = 10) +
+  labs(title = 'Distribution of Prices for All Vienna Accommodations', x = 'Price', y = 'Frequency') +
+  theme_bw()
+```
+Based on the above distribution, we can see that the majority of the prices are between 0 and 200, with a few outliers as high as 1000. This shows that many of the accommodations are priced at a reasonable rate, thus making it an attractive location for tourists. 
+
+Let's explore how the price distribution varies by type of accommodation.
+
+```{r price-dist-type, echo=FALSE}
+vienna %>%
+  ggplot(aes(x = price, fill = type)) +
+  geom_histogram(binwidth = 30, position = 'dodge') +
+  labs(title = 'Distribution of Prices by Accommodation Type', x = 'Price', y = 'Frequency') +
+  scale_fill_discrete(name = 'Accommodation Type', 
+                       breaks = c('hostel', 'hotel', 'other'), 
+                       labels = c('Hostel', 'Hotel', 'Other')) +
+  theme_bw()
 
 ```
 
+Below is a table showing the average price and customer rating by accommodation type.
+
+```{r price-rating-table, echo=FALSE}
+vienna %>%
+  group_by(type) %>%
+  summarize(mean_price = mean(price), mean_rating = mean(guestreviewsrating, na.rm=TRUE) %>% round(2))
+```
+
+```{r price-rating-plot, echo=FALSE}
+vienna %>%
+  ggplot(aes(x = price, y = guestreviewsrating, color = type), na.rm=TRUE) +
+  geom_point() +
+  scale_x_continuous(limits = c(0, 300)) +
+  geom_smooth(method = 'lm', se = FALSE) +
+  labs(title = 'Price vs. Customer Rating by Accommodation Type', x = 'Price', y = 'Customer Rating') +
+  scale_color_discrete(name = 'Accommodation Type', 
+                       breaks = c('hostel', 'hotel', 'other'), 
+                       labels = c('Hostel', 'Hotel', 'Other')) +
+  theme_bw()
+```
+Once we exclude any outliers from this scatter plot, we can uncover possible trends between price and customer rating. The relationship between between the two is interesting. For hostels, there is a downward trend, implying a higher price does not necessarily mean a higher rating. For hotels and other accommodations, there is a positive trend, implying a higher price is associated with a higher rating. However, it is not as strong of a relationship as we would expect, suggesting that there are other factors that contribute to the customer rating. 
+
+```{r price-rating-hist, echo=FALSE}
+
+
+
 
 ## Concluding Remarks
+
+This case study is a way to showcase the skills to take a raw data set and make the necessary cleaning techniques to make the appropriate analysis. One takeaway from this exercise is to keep track of the changes made in the data set as any visualizations may not work if the changes were not applied. Additionally, finding which visualization that can provide the best insights to the targeted audience is important with the variables that are present in the data set. Throughout this case study, there are some noteworthy relationships between price and the other variables in this data set. 

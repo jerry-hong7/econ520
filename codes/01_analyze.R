@@ -65,6 +65,7 @@ vienna_data %>%
 vienna_data %>%
   ggplot(aes(x = price, y = guestreviewsrating, color = type)) +
   geom_point() +
+  scale_x_continuous(limits = c(0, 300)) +
   geom_smooth(method = 'lm', se = FALSE) +
   labs(title = 'Average Price and Customer Rating by Accommodation Type', x = 'Average Price', y = 'Average Customer Rating') +
   theme_bw() +
@@ -139,8 +140,15 @@ vienna_data %>%
   theme_bw() +
   ggsave('plots/distribution_of_price_hotels_8miles.png')
 
-# create histogram for the average price, among hotels only and add a horizontal line where the distance is at 8
-
+# create scatter plot for the average price, among hotels only and add a horizontal line where the distance is at 8
+vienna_data %>%
+  filter(type == 'hotel') %>%
+  ggplot(aes(x = price, y = distancecitycenter)) +
+  geom_point() +
+  geom_hline(yintercept = 8, color = 'red', lwd = 1) +
+  labs(title = 'Average Price by Distance from City Center for Hotels', x = 'Average Price', y = 'Distance from City Center (miles)') +
+  theme_bw() +
+  ggsave('plots/average_price_by_distance_hotels.png')
 
 # create a box plot for the average price by type of accommodation
 vienna_data %>%
