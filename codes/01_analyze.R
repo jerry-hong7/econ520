@@ -1,6 +1,10 @@
+<<<<<<< HEAD
 # Author: Jerry Hong
 # Disclaimer: The code below are through the assistance of GitHub Copilot
 
+=======
+'Disclaimer: The code below are through the assistance of GitHub Copilot'
+>>>>>>> 81d5b67cb149c29f9350fb25090b549bfd0e0846
 
 # load packages
 library(tidyverse)
