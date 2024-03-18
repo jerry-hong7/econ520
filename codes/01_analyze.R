@@ -1,3 +1,5 @@
+'Disclaimer: The code below are through the assistance of GitHub Copilot'
+
 # load packages
 library(tidyverse)
 
